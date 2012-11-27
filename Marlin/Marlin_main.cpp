@@ -292,6 +292,24 @@ void suicide()
   #endif
 }
 
+// GMM handling for the 3 reconfigurable hard buttons on the SmartController
+void setup_gmm_pin()
+{
+  #if( GMM_PIN1>-1 )
+    pinMode(GMM_PIN1,INPUT);
+    WRITE(GMM_PIN1,HIGH);
+  #endif
+  #if( GMM_PIN2>-1 )
+    pinMode(GMM_PIN2,INPUT);
+    WRITE(GMM_PIN2,HIGH);
+  #endif
+  #if( GMM_PIN3>-1 )
+    pinMode(GMM_PIN3,INPUT);
+    WRITE(GMM_PIN3,HIGH);
+  #endif  
+}
+// GMM End
+
 void setup()
 {
   setup_killpin(); 
@@ -345,6 +363,7 @@ void setup()
   watchdog_init();
   st_init();    // Initialize stepper, this enables interrupts!
   setup_photpin();
+  setup_gmm_pin(); // GMM Initialise hard buttons
   
   LCD_INIT;
 }
@@ -1790,6 +1809,22 @@ void manage_inactivity()
     }
   #endif
   check_axes_activity();
+
+  // GMM handling the hard buttons actions 
+  #if( GMM_PIN>1-1 )
+    if( 0 == READ(GMM_PIN1) )
+      Stop(); // qui in realtà devo mettere una funzione variabile (uso i "case")
+  #endif
+  #if( GMM_PIN2>-1 )
+    if( 0 == READ(GMM_PIN2) )
+    FanSpeed = 0; // qui in realtà devo mettere una funzione variabile (uso i "case")
+  #endif
+  #if( GMM_PIN3>-1 )
+    if( 0 == READ(GMM_PIN3) )
+    card.pauseSDPrint(); // Gcode M25 per mettere in pausa l'SD. non credo funzioni con il pc
+  #endif
+
+  
 }
 
 void kill()
