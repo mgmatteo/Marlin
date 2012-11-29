@@ -205,6 +205,11 @@ static uint8_t tmp_extruder;
 
 bool Stopped=false;
 
+// GMM used for detecting if a button is pressed or not (debounce purposes)
+boolean powerpanel_button_1_pressed = false; 
+boolean powerpanel_button_2_pressed = false; 
+boolean powerpanel_button_3_pressed = false; 
+
 //===========================================================================
 //=============================ROUTINES=============================
 //===========================================================================
@@ -292,21 +297,33 @@ void suicide()
   #endif
 }
 
-// GMM handling for the 3 reconfigurable hard buttons on the SmartController
-void setup_gmm_pin()
+// GMM handling for the 3 reconfigurable hard buttons and the 2 outputs on the POWERCONTROLLER
+void setup_powerpanel_io_pins()
 {
-  #if( GMM_PIN1>-1 )
-    pinMode(GMM_PIN1,INPUT);
-    WRITE(GMM_PIN1,HIGH);
+  #if(SOFT_BUTTON_1_PIN>-1 )
+    pinMode(SOFT_BUTTON_1_PIN,INPUT);
+    WRITE(SOFT_BUTTON_1_PIN,HIGH);
   #endif
-  #if( GMM_PIN2>-1 )
-    pinMode(GMM_PIN2,INPUT);
-    WRITE(GMM_PIN2,HIGH);
+  #if(SOFT_BUTTON_2_PIN>-1 )
+    pinMode(SOFT_BUTTON_2_PIN,INPUT);
+    WRITE(SOFT_BUTTON_2_PIN,HIGH);
   #endif
-  #if( GMM_PIN3>-1 )
-    pinMode(GMM_PIN3,INPUT);
-    WRITE(GMM_PIN3,HIGH);
+  #if(SOFT_BUTTON_3_PIN>-1 )
+    pinMode(SOFT_BUTTON_3_PIN,INPUT);
+    WRITE(SOFT_BUTTON_3_PIN,HIGH);
   #endif  
+  #ifdef POWERPANEL_IO_1_PIN
+    #if (POWERPANEL_IO_1_PIN > -1)
+    SET_OUTPUT(POWERPANEL_IO_1_PIN);
+    WRITE(POWERPANEL_IO_1_PIN, LOW);
+    #endif
+  #endif 
+  #ifdef POWERPANEL_IO_2_PIN
+    #if (POWERPANEL_IO_2_PIN > -1)
+    SET_OUTPUT(POWERPANEL_IO_2_PIN);
+    WRITE(POWERPANEL_IO_2_PIN, LOW);
+    #endif
+  #endif   
 }
 // GMM End
 
@@ -363,7 +380,7 @@ void setup()
   watchdog_init();
   st_init();    // Initialize stepper, this enables interrupts!
   setup_photpin();
-  setup_gmm_pin(); // GMM Initialise hard buttons
+  setup_powerpanel_io_pins(); // GMM Initialise POWERPANEL inputs and outputs
   
   LCD_INIT;
 }
@@ -1133,7 +1150,7 @@ void process_commands()
     #if FAN_PIN > -1
       case 106: //M106 Fan On
         if (code_seen('S')){
-           FanSpeed=constrain(code_value(),0,255);
+           FanSpeed = code_value();
         }
         else {
           FanSpeed=255;			
@@ -1810,20 +1827,40 @@ void manage_inactivity()
   #endif
   check_axes_activity();
 
-  // GMM handling the hard buttons actions 
-  #if( GMM_PIN>1-1 )
-    if( 0 == READ(GMM_PIN1) )
-      Stop(); // qui in realtà devo mettere una funzione variabile (uso i "case")
-  #endif
-  #if( GMM_PIN2>-1 )
-    if( 0 == READ(GMM_PIN2) )
-    FanSpeed = 0; // qui in realtà devo mettere una funzione variabile (uso i "case")
-  #endif
-  #if( GMM_PIN3>-1 )
-    if( 0 == READ(GMM_PIN3) )
-    card.pauseSDPrint(); // Gcode M25 per mettere in pausa l'SD. non credo funzioni con il pc
-  #endif
+  // GMM handling the hard buttons actions with debounce. needs improovments
+  #ifdef POWERPANEL  
+   #if( SOFT_BUTTON_1_PIN>-1 )
+     if( 0 == READ(SOFT_BUTTON_1_PIN) ){
+       if (powerpanel_button_1_pressed == false){
+         powerpanel_button_1_pressed = true; // debounce
+         enquecommand(SOFT_BUTTON_ACTION_1); //beepshort();
+       }
+     }
+     else (powerpanel_button_1_pressed = false);
+   #endif
+   #if( SOFT_BUTTON_2_PIN>-1 )
+     if( 0 == READ(SOFT_BUTTON_2_PIN) ){
+       if (powerpanel_button_2_pressed == false){
+         powerpanel_button_2_pressed = true; // debounce
+         enquecommand(SOFT_BUTTON_ACTION_2); //beepshort();
+       }
+     }
+     else (powerpanel_button_2_pressed = false);  
+   #endif
+   #if( SOFT_BUTTON_3_PIN>-1 )
+     if( 0 == READ(SOFT_BUTTON_3_PIN) ){
+       if (powerpanel_button_3_pressed == false){
+         powerpanel_button_3_pressed = true; // debounce
+         enquecommand(SOFT_BUTTON_ACTION_3); //beepshort();
+       }
+     }
+     else (powerpanel_button_3_pressed = false);
+   #endif
 
+   //  if(( 1 == READ(SOFT_BUTTON_3_PIN) ) & ( 1 == READ(SOFT_BUTTON_3_PIN) ) & ( 1 == READ(SOFT_BUTTON_3_PIN) )) (powerpanel_button_pressed = false);
+   
+  #endif
+  // end of GMM code
   
 }
 
