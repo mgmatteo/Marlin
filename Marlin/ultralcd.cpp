@@ -57,6 +57,13 @@ static unsigned long previous_millis_lcd=0;
 #else
  static unsigned long blocking[8]={0,0,0,0,0,0,0,0};
 #endif
+
+// GMM Detecting if a button is pressed or not (debounce purposes)
+#ifdef POWERPANEL
+boolean powerpanel_button_1_pressed = false; 
+boolean powerpanel_button_2_pressed = false; 
+boolean powerpanel_button_3_pressed = false; 
+#endif
  
 static MainMenu menu;
 
@@ -265,6 +272,28 @@ void buttons_init()
       WRITE(SDCARDDETECT,HIGH);
     }
     #endif
+    // GMM powerpanel I/O
+    #ifdef POWERPANEL    
+      pinMode(SOFT_BUTTON_1_PIN,INPUT);
+      pinMode(SOFT_BUTTON_2_PIN,INPUT);
+      pinMode(SOFT_BUTTON_3_PIN,INPUT);
+      WRITE(SOFT_BUTTON_1_PIN,HIGH);
+      WRITE(SOFT_BUTTON_2_PIN,HIGH);
+      WRITE(SOFT_BUTTON_3_PIN,HIGH);
+      #ifdef POWERPANEL_IO_1_PIN
+        #if (POWERPANEL_IO_1_PIN > -1)
+         SET_OUTPUT(POWERPANEL_IO_1_PIN);
+         WRITE(POWERPANEL_IO_1_PIN, LOW);
+        #endif
+       #endif 
+      #ifdef POWERPANEL_IO_2_PIN
+       #if (POWERPANEL_IO_2_PIN > -1)
+        SET_OUTPUT(POWERPANEL_IO_2_PIN);
+        WRITE(POWERPANEL_IO_2_PIN, LOW);
+       #endif
+      #endif   
+      #endif 
+     // GMM end
   #else
     pinMode(SHIFT_CLK,OUTPUT);
     pinMode(SHIFT_LD,OUTPUT);
@@ -277,7 +306,7 @@ void buttons_init()
 }
 
 
-void buttons_check()
+void buttons_check() // GMM posso spostare il controllo dei bottoni qui
 {
   
   #ifdef NEWPANEL
@@ -287,6 +316,33 @@ void buttons_check()
     if((blocking<millis()) &&(READ(BTN_ENC)==0))
       newbutton|=EN_C;
     buttons=newbutton;
+    
+  // GMM handling the hard buttons actions with debounce.
+  #ifdef POWERPANEL  
+     if( 0 == READ(SOFT_BUTTON_1_PIN) ){
+       if (powerpanel_button_1_pressed == false){
+         powerpanel_button_1_pressed = true; 
+         enquecommand(SOFT_BUTTON_ACTION_1); beepshort();
+       }
+     }
+     else (powerpanel_button_1_pressed = false);
+     if( 0 == READ(SOFT_BUTTON_2_PIN) ){
+       if (powerpanel_button_2_pressed == false){
+         powerpanel_button_2_pressed = true; 
+         enquecommand(SOFT_BUTTON_ACTION_2); beepshort();
+       }
+     }
+     else (powerpanel_button_2_pressed = false);  
+     if( 0 == READ(SOFT_BUTTON_3_PIN) ){
+       if (powerpanel_button_3_pressed == false){
+         powerpanel_button_3_pressed = true; 
+         enquecommand(SOFT_BUTTON_ACTION_3); beepshort();
+       }
+     }
+     else (powerpanel_button_3_pressed = false);
+  #endif
+  // end GMM
+    
   #else   //read it from the shift register
     uint8_t newbutton=0;
     WRITE(SHIFT_LD,LOW);
