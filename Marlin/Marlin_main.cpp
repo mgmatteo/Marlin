@@ -207,12 +207,7 @@ static uint8_t tmp_extruder;
 
 
 bool Stopped=false;
-/*
-// GMM Detecting if a button is pressed or not (debounce purposes)
-boolean powerpanel_button_1_pressed = false; 
-boolean powerpanel_button_2_pressed = false; 
-boolean powerpanel_button_3_pressed = false; 
-*/
+
 //===========================================================================
 //=============================ROUTINES=============================
 //===========================================================================
@@ -299,42 +294,6 @@ void suicide()
     #endif
   #endif
 }
-/*
-// GMM __> Setup powerpanel pins. Default is 3(+1) reconfigurable hard buttons and the 2 outputs on the POWERCONTROLLER
-void setup_powerpanel_io_pins()
-{
- #ifdef SOFT_BUTTON_1_PIN
-    #if(SOFT_BUTTON_1_PIN>-1 )
-      pinMode(SOFT_BUTTON_1_PIN,INPUT);
-      WRITE(SOFT_BUTTON_1_PIN,HIGH);
-    #endif
-  #endif
- #ifdef SOFT_BUTTON_2 _PIN 
-    #if(SOFT_BUTTON_2_PIN>-1 )
-      pinMode(SOFT_BUTTON_2_PIN,INPUT);
-      WRITE(SOFT_BUTTON_2_PIN,HIGH);
-    #endif
-  #endif
- #ifdef SOFT_BUTTON_3 _PIN   
-    #if(SOFT_BUTTON_3_PIN>-1 )
-      pinMode(SOFT_BUTTON_3_PIN,INPUT);
-      WRITE(SOFT_BUTTON_3_PIN,HIGH);
-    #endif
-   #endif  
- #ifdef POWERPANEL_IO_1_PIN
-    #if (POWERPANEL_IO_1_PIN > -1)
-      SET_OUTPUT(POWERPANEL_IO_1_PIN);
-      WRITE(POWERPANEL_IO_1_PIN, LOW);
-    #endif
-  #endif 
- #ifdef POWERPANEL_IO_2_PIN
-    #if (POWERPANEL_IO_2_PIN > -1)
-      SET_OUTPUT(POWERPANEL_IO_2_PIN);
-      WRITE(POWERPANEL_IO_2_PIN, LOW);
-    #endif
-  #endif   
-}
-*/
 
 void setup()
 {
@@ -389,7 +348,6 @@ void setup()
   watchdog_init();
   st_init();    // Initialize stepper, this enables interrupts!
   setup_photpin();
-  //setup_powerpanel_io_pins(); // GMM Initialise POWERPANEL inputs and outputs
   
   LCD_INIT;
 }
@@ -1850,39 +1808,6 @@ void manage_inactivity()
     }
   #endif
   check_axes_activity();
-
-/*  // GMM handling the hard buttons actions with debounce.
-  #ifdef POWERPANEL  
-   #if( SOFT_BUTTON_1_PIN>-1 )
-     if( 0 == READ(SOFT_BUTTON_1_PIN) ){
-       if (powerpanel_button_1_pressed == false){
-         powerpanel_button_1_pressed = true; // debounce
-         enquecommand(SOFT_BUTTON_ACTION_1); //beepshort();
-       }
-     }
-     else (powerpanel_button_1_pressed = false);
-   #endif
-   #if( SOFT_BUTTON_2_PIN>-1 )
-     if( 0 == READ(SOFT_BUTTON_2_PIN) ){
-       if (powerpanel_button_2_pressed == false){
-         powerpanel_button_2_pressed = true; // debounce
-         enquecommand(SOFT_BUTTON_ACTION_2); //beepshort();
-       }
-     }
-     else (powerpanel_button_2_pressed = false);  
-   #endif
-   #if( SOFT_BUTTON_3_PIN>-1 )
-     if( 0 == READ(SOFT_BUTTON_3_PIN) ){
-       if (powerpanel_button_3_pressed == false){
-         powerpanel_button_3_pressed = true; // debounce
-         enquecommand(SOFT_BUTTON_ACTION_3); //beepshort();
-       }
-     }
-     else (powerpanel_button_3_pressed = false);
-   #endif  
-  #endif
-*/
-
 }
 
 void kill()

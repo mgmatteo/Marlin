@@ -306,7 +306,7 @@ void buttons_init()
 }
 
 
-void buttons_check() // GMM posso spostare il controllo dei bottoni qui
+void buttons_check()
 {
   
   #ifdef NEWPANEL
