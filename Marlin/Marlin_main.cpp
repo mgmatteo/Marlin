@@ -39,6 +39,7 @@
 #include "ConfigurationStore.h"
 #include "language.h"
 #include "pins_arduino.h"
+#include "Hysteresis.h" // GMM --> NeilMartin hysteresis fix
 
 #if DIGIPOTSS_PIN > -1
 #include <SPI.h>
@@ -97,6 +98,8 @@
 //        or use S<seconds> to specify an inactivity timeout, after which the steppers will be disabled.  S0 to disable the timeout.
 // M85  - Set inactivity shutdown timer with parameter S<seconds>. To disable set zero (default)
 // M92  - Set axis_steps_per_unit - same syntax as G92
+// M98  - Get current hysteresis mm values for all axis // GMM --> NeilMartin hysteresis fix
+// M99  - Set XYZE hysteresis mm. To turn off hysteresis... (M99 X0 Y0 Z0 E0) // GMM --> NeilMartin hysteresis fix
 // M114 - Output current position to serial port 
 // M115	- Capabilities string
 // M117 - display message
@@ -205,11 +208,6 @@ static uint8_t tmp_extruder;
 
 bool Stopped=false;
 
-// GMM used for detecting if a button is pressed or not (debounce purposes)
-boolean powerpanel_button_1_pressed = false; 
-boolean powerpanel_button_2_pressed = false; 
-boolean powerpanel_button_3_pressed = false; 
-
 //===========================================================================
 //=============================ROUTINES=============================
 //===========================================================================
@@ -297,36 +295,6 @@ void suicide()
   #endif
 }
 
-// GMM handling for the 3 reconfigurable hard buttons and the 2 outputs on the POWERCONTROLLER
-void setup_powerpanel_io_pins()
-{
-  #if(SOFT_BUTTON_1_PIN>-1 )
-    pinMode(SOFT_BUTTON_1_PIN,INPUT);
-    WRITE(SOFT_BUTTON_1_PIN,HIGH);
-  #endif
-  #if(SOFT_BUTTON_2_PIN>-1 )
-    pinMode(SOFT_BUTTON_2_PIN,INPUT);
-    WRITE(SOFT_BUTTON_2_PIN,HIGH);
-  #endif
-  #if(SOFT_BUTTON_3_PIN>-1 )
-    pinMode(SOFT_BUTTON_3_PIN,INPUT);
-    WRITE(SOFT_BUTTON_3_PIN,HIGH);
-  #endif  
-  #ifdef POWERPANEL_IO_1_PIN
-    #if (POWERPANEL_IO_1_PIN > -1)
-    SET_OUTPUT(POWERPANEL_IO_1_PIN);
-    WRITE(POWERPANEL_IO_1_PIN, LOW);
-    #endif
-  #endif 
-  #ifdef POWERPANEL_IO_2_PIN
-    #if (POWERPANEL_IO_2_PIN > -1)
-    SET_OUTPUT(POWERPANEL_IO_2_PIN);
-    WRITE(POWERPANEL_IO_2_PIN, LOW);
-    #endif
-  #endif   
-}
-// GMM End
-
 void setup()
 {
   setup_killpin(); 
@@ -380,7 +348,6 @@ void setup()
   watchdog_init();
   st_init();    // Initialize stepper, this enables interrupts!
   setup_photpin();
-  setup_powerpanel_io_pins(); // GMM Initialise POWERPANEL inputs and outputs
   
   LCD_INIT;
 }
@@ -1243,6 +1210,21 @@ void process_commands()
         }
       }
       break;
+// GMM --> NeilMartin hysteresis fix
+    case 98: // M98
+      {
+        hysteresis.ReportToSerial();
+      }
+      break;
+    case 99: // M99
+      {
+        if(code_seen('X')) hysteresis.SetAxis( X_AXIS, code_value() );
+        if(code_seen('Y')) hysteresis.SetAxis( Y_AXIS, code_value() );
+        if(code_seen('Z')) hysteresis.SetAxis( Z_AXIS, code_value() );
+        if(code_seen('E')) hysteresis.SetAxis( E_AXIS, code_value() );
+      }
+      break;      
+// GMM END --> NeilMartin hysteresis fix 
     case 115: // M115
       SERIAL_PROTOCOLPGM(MSG_M115_REPORT);
       break;
@@ -1826,42 +1808,6 @@ void manage_inactivity()
     }
   #endif
   check_axes_activity();
-
-  // GMM handling the hard buttons actions with debounce. needs improovments
-  #ifdef POWERPANEL  
-   #if( SOFT_BUTTON_1_PIN>-1 )
-     if( 0 == READ(SOFT_BUTTON_1_PIN) ){
-       if (powerpanel_button_1_pressed == false){
-         powerpanel_button_1_pressed = true; // debounce
-         enquecommand(SOFT_BUTTON_ACTION_1); //beepshort();
-       }
-     }
-     else (powerpanel_button_1_pressed = false);
-   #endif
-   #if( SOFT_BUTTON_2_PIN>-1 )
-     if( 0 == READ(SOFT_BUTTON_2_PIN) ){
-       if (powerpanel_button_2_pressed == false){
-         powerpanel_button_2_pressed = true; // debounce
-         enquecommand(SOFT_BUTTON_ACTION_2); //beepshort();
-       }
-     }
-     else (powerpanel_button_2_pressed = false);  
-   #endif
-   #if( SOFT_BUTTON_3_PIN>-1 )
-     if( 0 == READ(SOFT_BUTTON_3_PIN) ){
-       if (powerpanel_button_3_pressed == false){
-         powerpanel_button_3_pressed = true; // debounce
-         enquecommand(SOFT_BUTTON_ACTION_3); //beepshort();
-       }
-     }
-     else (powerpanel_button_3_pressed = false);
-   #endif
-
-   //  if(( 1 == READ(SOFT_BUTTON_3_PIN) ) & ( 1 == READ(SOFT_BUTTON_3_PIN) ) & ( 1 == READ(SOFT_BUTTON_3_PIN) )) (powerpanel_button_pressed = false);
-   
-  #endif
-  // end of GMM code
-  
 }
 
 void kill()

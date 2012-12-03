@@ -29,10 +29,10 @@
 #endif
 
 // GMM poco fine, solo temporaneo
-#ifdef POWERPANEL
-	#define MACHINE_NAME "Power Wasp by GMM"
+//#ifdef POWERPANEL
+	#define MACHINE_NAME "Powerpanel"
 	#define FIRMWARE_URL "http://firmware.wirtec.com"
-#endif
+//#endif
 
 
 #define STRINGIFY_(n) #n
