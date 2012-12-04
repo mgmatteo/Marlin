@@ -28,6 +28,13 @@
 	#define FIRMWARE_URL "http://www.mendel-parts.com"
 #endif
 
+// GMM poco fine, solo temporaneo
+#ifdef POWERPANEL
+	#define MACHINE_NAME "Power Wasp by GMM"
+	#define FIRMWARE_URL "http://firmware.wirtec.com"
+#endif
+// GMM END
+
 #define STRINGIFY_(n) #n
 #define STRINGIFY(n) STRINGIFY_(n)
 

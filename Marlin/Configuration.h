@@ -290,10 +290,10 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 // M501 - reads parameters from EEPROM (if you need reset them after you changed them temporarily).  
 // M502 - reverts to the default "factory settings".  You still need to store them in EEPROM afterwards if you want to.
 //define this to enable eeprom support
-//#define EEPROM_SETTINGS
+#define EEPROM_SETTINGS
 //to disable EEPROM Serial responses and decrease program space by ~1700 byte: comment this out:
 // please keep turned on if you can.
-//#define EEPROM_CHITCHAT
+#define EEPROM_CHITCHAT
 
 //LCD and SD support
 //#define ULTRA_LCD  //general lcd support, also 16x2
@@ -301,6 +301,7 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 
 //#define ULTIMAKERCONTROLLER //as available from the ultimaker online store.
 //#define ULTIPANEL  //the ultipanel as on thingiverse
+#define POWERPANEL  // GMM la mia versione di pannello con 3 hard buttons configurabili e tasto Kill
 
 // The RepRapDiscount Smart Controller
 // http://reprap.org/wiki/RepRapDiscount_Smart_Controller
@@ -308,6 +309,9 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 
 
 //automatic expansion
+#if defined(POWERPANEL) // powerpanel has the ultimaker functions plus I/O
+ #define ULTIMAKERCONTROLLER
+#endif 
 #if defined(ULTIMAKERCONTROLLER) || defined(REPRAP_DISCOUNT_SMART_CONTROLLER)
  #define ULTIPANEL
  #define NEWPANEL
@@ -322,6 +326,9 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 #define ABS_PREHEAT_HPB_TEMP 100
 #define ABS_PREHEAT_FAN_SPEED 255		// Insert Value between 0 and 255
 
+// GMM Limit fan speed (GMM for tension limiting)
+#define FAN_SPEED_MIN 70  // To be implemented
+#define FAN_SPEED_MAX 135 // used at the time of "analogwrite" to scale the fanspeed value
 
 #ifdef ULTIPANEL
 //  #define NEWPANEL  //enable this if you have a click-encoder panel
@@ -340,9 +347,36 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 // Increase the FAN pwm frequency. Removes the PWM noise but increases heating in the FET/Arduino
 //#define FAST_PWM_FAN
 
+
 // M240  Triggers a camera by emulating a Canon RC-1 Remote
 // Data from: http://www.doc-diy.net/photo/rc-1_hacked/
-// #define PHOTOGRAPH_PIN     23
+ #define PHOTOGRAPH_PIN 12 // GMM test, era 23 e commentato. pin D9 su EXP 3 (usato per output), se invio il comando M240 mi aspetto di vedere 5v su questo pin (ma non so la durata, potrebbe essere troppo veloce per il mio tester)
+
+#define POWERPANEL_IO_1_PIN 13
+//#define POWERPANEL_IO_2_PIN -1 // used for kill
+
+// POWERPANEL acts as a ULTIMAKERCONTROLLER plus:
+// 4 phisical buttons, normaly used as one emergency stop and 3 configurable actions that can be used as "shortcuts" for frequently accessed funtions. All reconfigurable
+// 1 expansion port
+// if used in conjunction with on Ultimaker board these are connected on "Expansion 3" but can be reconfigured to be used with any other digital input pin for any board use
+// The following pin configuration assumes it has been connected to expansion 3 of an ultimaker board (1.5.4 and newer)
+// pin 8,9,10,11 are used as inputs for the buttons on the panel and pins 12,13 as generic outputAll pins are pwm. All pins are replicated on the expansion port of the POWERPANEL for convenience (no need to reopen the printer, more cleaner installation)
+// pin 8 is normally used to kill the printer in case of emergency. It's configured in pins.h
+
+#define SOFT_BUTTON_1_PIN 9 // pin D10 su EXP3
+#define SOFT_BUTTON_2_PIN 10 // pin D11 su EXP3
+#define SOFT_BUTTON_3_PIN 11 // pin D12 su EXP3
+
+// actions to be performed are expressed as gcodes
+#define SOFT_BUTTON_ACTION_1 "M42 S50 P13" // Fan on
+#define SOFT_BUTTON_ACTION_2 "M42 S0 P13" // Fan off
+#define SOFT_BUTTON_ACTION_3 "G28" // HOME all axis
+// other usage examples:
+// "M240" to use a button on the panel to riggers a camera by emulating a Canon RC-1 Remote using pin 12 that's also present on the expansion port of POWERPANEL
+// "M42 S255 P13" // turn on pin 13 (pwm) using Marlin command M42
+// "M42 S128 P13" // turn on pin 13 (pwm) to 50% duty cycle
+// "M42 S0 P13" // turn off pin 13
+
 
 // SF send wrong arc g-codes when using Arc Point as fillet procedure
 //#define SF_ARC_FIX
@@ -351,3 +385,4 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 #include "thermistortables.h"
 
 #endif //__CONFIGURATION_H
+
