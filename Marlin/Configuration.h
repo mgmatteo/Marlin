@@ -8,8 +8,8 @@
 //User specified version info of this build to display in [Pronterface, etc] terminal window during startup.
 //Implementation of an idea by Prof Braino to inform user that any changes made
 //to this build by the user have been successfully uploaded into firmware.
-#define STRING_VERSION_CONFIG_H __DATE__ " " __TIME__ // build date and time
-#define STRING_CONFIG_H_AUTHOR "(none, default config)" //Who made the changes.
+#define STRING_VERSION_CONFIG_H "25-11-2012" //Personal revision number for changes to THIS file.
+#define STRING_CONFIG_H_AUTHOR "Gianmatteo Mazzoni" //Who made the changes.
 
 // SERIAL_PORT selects which serial port should be used for communication with the host.
 // This allows the connection of wireless adapters (for instance) to non-default port pins.
@@ -79,8 +79,8 @@
 #define TEMP_SENSOR_BED 0
 
 // Actual temperature must be close to target for this long before M109 returns success
-#define TEMP_RESIDENCY_TIME 10	// (seconds)
-#define TEMP_HYSTERESIS 3       // (degC) range of +/- temperatures considered "close" to the target one
+#define TEMP_RESIDENCY_TIME 5	// (seconds)
+#define TEMP_HYSTERESIS 4       // (degC) range of +/- temperatures considered "close" to the target one
 #define TEMP_WINDOW     1       // (degC) Window around target to start the recidency timer x degC early.
 
 // The minimal temperature defines the temperature below which the heater will not be enabled It is used
@@ -116,10 +116,16 @@
   #define PID_dT ((16.0 * 8.0)/(F_CPU / 64.0 / 256.0)) //sampling period of the
 
 // If you are using a preconfigured hotend then you can use one of the value sets by uncommenting it
-// Ultimaker
+// POWER WASP
     #define  DEFAULT_Kp 22.2
     #define  DEFAULT_Ki 1.08  
     #define  DEFAULT_Kd 114  
+    
+// If you are using a preconfigured hotend then you can use one of the value sets by uncommenting it
+// Ultimaker
+//    #define  DEFAULT_Kp 22.2
+//    #define  DEFAULT_Ki 1.08  
+//    #define  DEFAULT_Kd 114  
 
 // Makergear
 //    #define  DEFAULT_Kp 7.0
@@ -243,14 +249,14 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 #define Y_HOME_DIR -1
 #define Z_HOME_DIR -1
 
-#define min_software_endstops true //If true, axis won't move to coordinates less than HOME_POS.
+#define min_software_endstops false //If true, axis won't move to coordinates less than HOME_POS.
 #define max_software_endstops true  //If true, axis won't move to coordinates greater than the defined lengths below.
 // Travel limits after homing
-#define X_MAX_POS 205
+#define X_MAX_POS 260
 #define X_MIN_POS 0
-#define Y_MAX_POS 205
+#define Y_MAX_POS 190
 #define Y_MIN_POS 0
-#define Z_MAX_POS 200
+#define Z_MAX_POS 210
 #define Z_MIN_POS 0
 
 #define X_MAX_LENGTH (X_MAX_POS - X_MIN_POS)
@@ -271,10 +277,15 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 #define HOMING_FEEDRATE {50*60, 50*60, 4*60, 0}  // set the homing speeds (mm/min)
 
 // default settings 
+//#define DEFAULT_AXIS_STEPS_PER_UNIT   {78.7402,78.7402,200*8/3,760*1.1}  // default steps per unit for ultimaker 
+//#define DEFAULT_MAX_FEEDRATE          {500, 500, 5, 45}    // (mm/sec)    
+//#define DEFAULT_MAX_ACCELERATION      {9000,9000,100,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
 
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {78.7402,78.7402,200*8/3,760*1.1}  // default steps per unit for ultimaker 
-#define DEFAULT_MAX_FEEDRATE          {500, 500, 5, 45}    // (mm/sec)    
-#define DEFAULT_MAX_ACCELERATION      {9000,9000,100,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
+// wasp settings 
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {87.7817,87.7817,200*8/3,927.774}  // GMM measured eSteps
+#define DEFAULT_MAX_FEEDRATE          {30000, 30000, 10, 45}    // (mm/sec)    
+#define DEFAULT_MAX_ACCELERATION      {9000,9000,50,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
+
 
 #define DEFAULT_ACCELERATION          3000    // X, Y, Z and E max acceleration in mm/s^2 for printing moves 
 #define DEFAULT_RETRACT_ACCELERATION  3000   // X, Y, Z and E max acceleration in mm/s^2 for r retracts
