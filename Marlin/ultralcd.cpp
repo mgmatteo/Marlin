@@ -2526,7 +2526,7 @@ void MainMenu::update()
 {
   static MainStatus oldstatus=Main_Menu;  //init automatically causes foce_lcd_update=true
   static unsigned long timeoutToStatus=0;
-  #if (SDCARDDETECT > -1) 
+  #if (SDCARDDETECT > -1)
     //This code is only relivant if you have an SDcard detect pin.
     static bool oldcardstatus=false;
     if((IS_SD_INSERTED != oldcardstatus))
