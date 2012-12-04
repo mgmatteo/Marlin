@@ -301,7 +301,7 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 
 //#define ULTIMAKERCONTROLLER //as available from the ultimaker online store.
 //#define ULTIPANEL  //the ultipanel as on thingiverse
-#define POWERPANEL  // GMM la mia versione di pannello con 3 hard buttons configurabili e tasto Kill
+#define POWERPANEL  // GMM ultimakercontroller like panel with 3 configurable buttons a kill button and an expansion port for IO
 
 // The RepRapDiscount Smart Controller
 // http://reprap.org/wiki/RepRapDiscount_Smart_Controller
