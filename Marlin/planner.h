@@ -136,4 +136,10 @@ FORCE_INLINE bool blocks_queued()
 }
 
 void allow_cold_extrudes(bool allow);
+
+// GMM --> NeilMartin hysteresis fix
+void copy_position( float* ret_position );
+void set_position( const float* new_position );
+// GMM END
+
 #endif

@@ -39,6 +39,7 @@
 #include "ConfigurationStore.h"
 #include "language.h"
 #include "pins_arduino.h"
+#include "Hysteresis.h" // GMM --> NeilMartin hysteresis fix
 
 #if DIGIPOTSS_PIN > -1
 #include <SPI.h>
@@ -97,6 +98,8 @@
 //        or use S<seconds> to specify an inactivity timeout, after which the steppers will be disabled.  S0 to disable the timeout.
 // M85  - Set inactivity shutdown timer with parameter S<seconds>. To disable set zero (default)
 // M92  - Set axis_steps_per_unit - same syntax as G92
+// M98  - Get current hysteresis mm values for all axis // GMM --> NeilMartin hysteresis fix
+// M99  - Set XYZE hysteresis mm. To turn off hysteresis... (M99 X0 Y0 Z0 E0) // GMM --> NeilMartin hysteresis fix
 // M114 - Output current position to serial port 
 // M115	- Capabilities string
 // M117 - display message
@@ -1217,6 +1220,21 @@ void process_commands()
         }
       }
       break;
+// GMM --> NeilMartin hysteresis fix
+    case 98: // M98
+      {
+        hysteresis.ReportToSerial();
+      }
+      break;
+    case 99: // M99
+      {
+        if(code_seen('X')) hysteresis.SetAxis( X_AXIS, code_value() );
+        if(code_seen('Y')) hysteresis.SetAxis( Y_AXIS, code_value() );
+        if(code_seen('Z')) hysteresis.SetAxis( Z_AXIS, code_value() );
+        if(code_seen('E')) hysteresis.SetAxis( E_AXIS, code_value() );
+      }
+      break;      
+// GMM END --> NeilMartin hysteresis fix       
     case 115: // M115
       SERIAL_PROTOCOLPGM(MSG_M115_REPORT);
       break;
