@@ -806,11 +806,11 @@
 
 #define SDPOWER            -1
 #define SDSS               53
-#define LED_PIN            13
-#define FAN_PIN            7
-#define PS_ON_PIN          12
-#define KILL_PIN           -1
-#define SUICIDE_PIN        54  //PIN that has to be turned on right after start, to keep power flowing.
+#define LED_PIN            13 // GMM: al pin analogico o digitale? in realt√† credo che LED_PIN non sia neppure dichiarato nel programma
+#define FAN_PIN            7  // GMM: ho aggiunto sulla scheda i componenti quindi funziona. ATTENZIONE va da 0v a VCC (quindi anche 18v)
+#define PS_ON_PIN          12 // GMM: al pin analogico o digitale? se al digitale ATTENZIONE perch√® √® sull'espansione 3. Serve per al gestione dell'alimentazione (vedi Gcode M80). Credo che in realt√† qui non serva. solo per le schede che gestiscono in modo diverso lo standby o non hanno il bottone on/off?
+#define KILL_PIN           8  // GMM: l'originale era -1 (disabilitato). Cambiato in D8 su exp 3 per gestire il bottone di Stop immediato sul pannello LCD. √® normalmente alto quindi per attivarlo con un bottone va mandato al ground
+#define SUICIDE_PIN        54 //PIN that has to be turned on right after start, to keep power flowing. GMM: il pin 54 dovrebbe essere "analog 0". Sulla scheda non credo sia gestito. infatti √® sempre attivo se non collegato al ground (come il kill pin)
 
 #ifdef ULTRA_LCD
 
