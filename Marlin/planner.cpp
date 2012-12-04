@@ -461,7 +461,7 @@ void check_axes_activity()
   {
     #if FAN_PIN > -1
     if (fanSpeed != 0){
-      analogWrite(FAN_PIN,fanSpeed); // If buffer is empty use current fan speed
+      analogWrite(FAN_PIN,  map(fanSpeed, 0, 255, 0, FAN_SPEED_MAX)); // If buffer is empty use current fan speed // GMM scale the values to remain within the FAN_MAX_SPEED      
     }
     #endif
   }
@@ -482,7 +482,7 @@ void check_axes_activity()
 
   if (fanSpeed != 0 && tail_fan_speed !=0)
   {
-    analogWrite(FAN_PIN,tail_fan_speed);
+    analogWrite(FAN_PIN,  map(tail_fan_speed, 0, 255, 0, FAN_SPEED_MAX)); // GMM scale the values to remain within the FAN_MAX_SPEED       
   }
 #endif
 #ifdef AUTOTEMP

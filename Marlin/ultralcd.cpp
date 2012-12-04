@@ -566,7 +566,7 @@ void MainMenu::showPrepare()
 		MENUITEM(  LCD_PRINT_PGM(MSG_PREHEAT_PLA)  ,  LCD_BLOCK;setTargetHotend0(plaPreheatHotendTemp);setTargetBed(plaPreheatHPBTemp);
       #if FAN_PIN > -1
 		fanSpeed = plaPreheatFanSpeed;
-        analogWrite(FAN_PIN,  fanSpeed);
+        analogWrite(FAN_PIN,  map(fanSpeed, 0, 255, 0, FAN_SPEED_MAX)); // GMM scale values to remain within the FAN_MAX_SPEED
       #endif
       beepshort(); );
       break;
@@ -574,7 +574,7 @@ void MainMenu::showPrepare()
       MENUITEM(  LCD_PRINT_PGM(MSG_PREHEAT_ABS)  ,  LCD_BLOCK;setTargetHotend0(absPreheatHotendTemp);setTargetBed(absPreheatHPBTemp); 
       #if FAN_PIN > -1
 	  	fanSpeed = absPreheatFanSpeed;
-        analogWrite(FAN_PIN,  fanSpeed);
+        analogWrite(FAN_PIN,  map(fanSpeed, 0, 255, 0, FAN_SPEED_MAX)); // GMM scale values to remain within the FAN_MAX_SPEED
       #endif
       beepshort(); );
       break;
@@ -918,7 +918,7 @@ void MainMenu::showTune()
           if(encoderpos<0) encoderpos=0;
           if(encoderpos>255) encoderpos=255;
           fanSpeed=encoderpos;
-            analogWrite(FAN_PIN,  fanSpeed);
+            analogWrite(FAN_PIN,  map(fanSpeed, 0, 255, 0, FAN_SPEED_MAX)); // GMM scale values to remain within the FAN_MAX_SPEED
           lcd.setCursor(13,line);lcd.print(itostr3(encoderpos));
         }
         
@@ -1320,7 +1320,7 @@ void MainMenu::showControlTemp()
           if(encoderpos<0) encoderpos=0;
           if(encoderpos>255) encoderpos=255;
           fanSpeed=encoderpos;
-            analogWrite(FAN_PIN,  fanSpeed);
+            analogWrite(FAN_PIN,  map(fanSpeed, 0, 255, 0, FAN_SPEED_MAX)); // GMM values to remain within the FAN_MAX_SPEED
           lcd.setCursor(13,line);lcd.print(itostr3(encoderpos));
         }
         
@@ -2526,7 +2526,7 @@ void MainMenu::update()
 {
   static MainStatus oldstatus=Main_Menu;  //init automatically causes foce_lcd_update=true
   static unsigned long timeoutToStatus=0;
-  #if (SDCARDDETECT > -1)
+  #if (SDCARDDETECT > -1) 
     //This code is only relivant if you have an SDcard detect pin.
     static bool oldcardstatus=false;
     if((IS_SD_INSERTED != oldcardstatus))

@@ -179,6 +179,10 @@
 #define EXTRUDE_MINTEMP 170
 #define EXTRUDE_MAXLENGTH (X_MAX_LENGTH+Y_MAX_LENGTH) //prevent extrusion of very large distances.
 
+// GMM Limit fan speed (GMM for tension limiting)
+#define FAN_SPEED_MIN 70  // To be implemented
+#define FAN_SPEED_MAX 135 // used at the time of "analogwrite" to scale the fanspeed value
+
 //===========================================================================
 //=============================Mechanical Settings===========================
 //===========================================================================
