@@ -231,7 +231,7 @@ void lcd_preheat_pla()
     setTargetBed(plaPreheatHPBTemp);
 #if FAN_PIN > -1
     fanSpeed = plaPreheatFanSpeed;
-    analogWrite(FAN_PIN,  fanSpeed);
+    analogWrite(FAN_PIN, map(fanSpeed, 0, 255, 0, FAN_SPEED_MAX)); // GMM scale values to remain within the FAN_MAX_SPEED
 #endif
     lcd_return_to_status();
 }
@@ -244,7 +244,7 @@ void lcd_preheat_abs()
     setTargetBed(absPreheatHPBTemp);
 #if FAN_PIN > -1
     fanSpeed = absPreheatFanSpeed;
-    analogWrite(FAN_PIN,  fanSpeed);
+    analogWrite(FAN_PIN, map(fanSpeed, 0, 255, 0, FAN_SPEED_MAX)); // GMM scale values to remain within the FAN_MAX_SPEED
 #endif
     lcd_return_to_status();
 }
