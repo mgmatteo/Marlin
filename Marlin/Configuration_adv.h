@@ -241,6 +241,12 @@ const unsigned int dropsegments=5; //everything with less than this number of st
 #ifdef ULTIPANEL
  #undef SDCARDDETECTINVERTED
 #endif
+
+// GMM: il lettore sd adafruit funziona al contrario di quello utilpanel: c'è segnale quando è inserita una sd
+#ifdef POWERPANEL
+ #define SDCARDDETECTINVERTED
+#endif
+
 //===========================================================================
 //=============================Buffers           ============================
 //===========================================================================
