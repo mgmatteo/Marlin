@@ -44,9 +44,10 @@
 // 90 = Alpha OMCA board
 // 91 = Final OMCA board
 // 301 = Rambo
+// 200 = PowerWasp
 
 #ifndef MOTHERBOARD
-#define MOTHERBOARD 7
+#define MOTHERBOARD 200
 #endif
 
 //// The following define selects which power supply you have. Please choose the one that matches your setup
