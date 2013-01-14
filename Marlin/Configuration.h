@@ -187,9 +187,6 @@
 #define EXTRUDE_MINTEMP 170
 #define EXTRUDE_MAXLENGTH (X_MAX_LENGTH+Y_MAX_LENGTH) //prevent extrusion of very large distances.
 
-// GMM Limit fan speed (GMM for tension limiting)
-#define FAN_SPEED_MIN 70  // To be implemented
-#define FAN_SPEED_MAX 135 // used at the time of "analogwrite" to scale the fanspeed value
 
 //===========================================================================
 //=============================Mechanical Settings===========================
@@ -343,8 +340,16 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 #define ABS_PREHEAT_FAN_SPEED 255		// Insert Value between 0 and 255
 
 // GMM Limit fan speed (GMM for tension limiting)
-#define FAN_SPEED_MIN 70  // To be implemented
-#define FAN_SPEED_MAX 135 // used at the time of "analogwrite" to scale the fanspeed value
+#define FAN_SPEED_VOLTAGE_LIMITING
+
+#ifdef FAN_SPEED_VOLTAGE_LIMITING // supposed using 18V power suply
+  #define FAN_SPEED_MIN 70  // To be implemented
+  #define FAN_SPEED_MAX 135 // used at the time of "analogwrite" to scale the fanspeed value
+
+#else //
+  #define FAN_SPEED_MIN 0  // To be implemented
+  #define FAN_SPEED_MAX 255 // used at the time of "analogwrite" to scale the fanspeed value
+#endif
 
 
 #ifdef ULTIPANEL
