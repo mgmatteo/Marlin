@@ -1431,12 +1431,19 @@
 #define SDSUPPORT
 #define SDCARDDETECT 38
 
+#endif // PowerWasp
 
-#ifdef ULTRA_LCD
+/****************************************************************************************
+ * POWERPANEL
+ *
+ ****************************************************************************************/
 
-#ifdef NEWPANEL
-//arduino pin witch triggers an piezzo beeper
+
+#ifdef POWERPANEL
+
 #define BEEPER 18
+
+#define SDCARDDETECT 38
 
 #define LCD_PINS_RS 20
 #define LCD_PINS_ENABLE 17
@@ -1461,52 +1468,19 @@
 #define encrot1 2
 #define encrot2 3
 #define encrot3 1
-#else //old style panel with shift register
-      //arduino pin witch triggers an piezzo beeper
-#define BEEPER 18
 
-//buttons are attached to a shift register
-#define SHIFT_CLK 38
-#define SHIFT_LD 42
-#define SHIFT_OUT 40
-#define SHIFT_EN 17
+#define POWERPANEL_IO_1_PIN 13 // used for kill
+//#define POWERPANEL_IO_2_PIN -1 // to disable
 
-#define LCD_PINS_RS 16
-#define LCD_PINS_ENABLE 5
-#define LCD_PINS_D4 6
-#define LCD_PINS_D5 21
-#define LCD_PINS_D6 20
-#define LCD_PINS_D7 19
+//#define SOFT_BUTTON_0_PIN 8 // verificare. Attualmente già configurato come "#define KILL_PIN 8"
+#define SOFT_BUTTON_1_PIN 9 // pin D10 su EXP3
+#define SOFT_BUTTON_2_PIN 10 // pin D11 su EXP3
+#define SOFT_BUTTON_3_PIN 11 // pin D12 su EXP3
 
-//encoder rotation values
-#ifndef ULTIMAKERCONTROLLER
-#define encrot0 0
-#define encrot1 2
-#define encrot2 3
-#define encrot3 1
-#else
-#define encrot0 0
-#define encrot1 1
-#define encrot2 3
-#define encrot3 2
+#endif //POWERPANEL
 
-#endif
 
-#define SDCARDDETECT -1
-//bits in the shift register that carry the buttons for:
-// left up center down right red
-#define BL_LE 7
-#define BL_UP 6
-#define BL_MI 5
-#define BL_DW 4
-#define BL_RI 3
-#define BL_ST 2
 
-#define BLEN_B 1
-#define BLEN_A 0
-#endif
-#endif //ULTRA_LCD
-#endif // PowerWasp
 
 /****************************************************************************************
 * MegaTronics
