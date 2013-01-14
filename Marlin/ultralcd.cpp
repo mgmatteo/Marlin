@@ -145,8 +145,7 @@ static void lcd_status_screen()
         currentMenu = lcd_main_menu;
         lcd_quick_feedback();
     }
-    if (abs(encoderPosition / 2) > 1)
-        feedmultiply += encoderPosition / 2;
+    feedmultiply += int(encoderPosition);
     encoderPosition = 0;
     if (feedmultiply < 10)
         feedmultiply = 10;
@@ -230,10 +229,7 @@ void lcd_preheat_pla()
     setTargetHotend1(plaPreheatHotendTemp);
     setTargetHotend2(plaPreheatHotendTemp);
     setTargetBed(plaPreheatHPBTemp);
-#if FAN_PIN > -1
     fanSpeed = plaPreheatFanSpeed;
-    analogWrite(FAN_PIN, map(fanSpeed, 0, 255, 0, FAN_SPEED_MAX)); // GMM scale values to remain within the FAN_MAX_SPEED
-#endif
     lcd_return_to_status();
 }
 
@@ -243,10 +239,7 @@ void lcd_preheat_abs()
     setTargetHotend1(absPreheatHotendTemp);
     setTargetHotend2(absPreheatHotendTemp);
     setTargetBed(absPreheatHPBTemp);
-#if FAN_PIN > -1
     fanSpeed = absPreheatFanSpeed;
-    analogWrite(FAN_PIN, map(fanSpeed, 0, 255, 0, FAN_SPEED_MAX)); // GMM scale values to remain within the FAN_MAX_SPEED
-#endif
     lcd_return_to_status();
 }
 
@@ -389,9 +382,9 @@ static void lcd_move_menu_axis()
     MENU_ITEM(back, MSG_MOVE_AXIS, lcd_move_menu);
     MENU_ITEM(submenu, "Move X", lcd_move_x);
     MENU_ITEM(submenu, "Move Y", lcd_move_y);
-    MENU_ITEM(submenu, "Move Z", lcd_move_z);
     if (move_menu_scale < 10.0)
     {
+        MENU_ITEM(submenu, "Move Z", lcd_move_z);
         MENU_ITEM(submenu, "Extruder", lcd_move_e);
     }
     END_MENU();
@@ -527,6 +520,9 @@ static void lcd_control_motion_menu()
     MENU_ITEM_EDIT(float52, MSG_YSTEPS, &axis_steps_per_unit[Y_AXIS], 5, 9999);
     MENU_ITEM_EDIT(float51, MSG_ZSTEPS, &axis_steps_per_unit[Z_AXIS], 5, 9999);
     MENU_ITEM_EDIT(float51, MSG_ESTEPS, &axis_steps_per_unit[E_AXIS], 5, 9999);    
+#ifdef ABORT_ON_ENDSTOP_HIT_FEATURE_ENABLED
+    MENU_ITEM_EDIT(bool, "Endstop abort", &abort_on_endstop_hit);
+#endif
     END_MENU();
 }
 
@@ -728,6 +724,8 @@ void lcd_init()
     WRITE(SDCARDDETECT, HIGH);
     lcd_oldcardstatus = IS_SD_INSERTED;
 #endif//(SDCARDDETECT > -1)
+    lcd_buttons_update();
+    encoderDiff = 0;
 }
 
 void lcd_update()
@@ -943,13 +941,17 @@ char *ftostr31(const float &x)
 char *ftostr32(const float &x)
 {
   long xx=x*100;
-  conv[0]=(xx>=0)?'+':'-';
+  if (xx >= 0)
+    conv[0]=(xx/10000)%10+'0';
+  else
+    conv[0]='-';
   xx=abs(xx);
-  conv[1]=(xx/100)%10+'0';
-  conv[2]='.';
-  conv[3]=(xx/10)%10+'0';
-  conv[4]=(xx)%10+'0';
-  conv[5]=0;
+  conv[1]=(xx/1000)%10+'0';
+  conv[2]=(xx/100)%10+'0';
+  conv[3]='.';
+  conv[4]=(xx/10)%10+'0';
+  conv[5]=(xx)%10+'0';
+  conv[6]=0;
   return conv;
 }
 
