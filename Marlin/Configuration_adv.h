@@ -268,6 +268,7 @@ const unsigned int dropsegments=5; //everything with less than this number of st
 #if (POWER_SUPPLY == 2) 
   #define PS_ON_AWAKE  HIGH
   #define PS_ON_ASLEEP LOW
+#endif
 
 //===========================================================================
 //=============================Buffers           ============================
