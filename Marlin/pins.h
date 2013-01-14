@@ -1430,6 +1430,7 @@
 // new PowerWasp model with SD reader
 #define SDSUPPORT
 #define SDCARDDETECT 38
+#define PRINTSTATUS 12
 
 #endif // PowerWasp
 
@@ -1469,7 +1470,8 @@
 #define encrot2 3
 #define encrot3 1
 
-#define POWERPANEL_IO_1_PIN 13 // used for kill
+#define POWERPANEL_IO_1_PIN 12 //
+#define POWERPANEL_IO_2_PIN 13 // used for kill
 //#define POWERPANEL_IO_2_PIN -1 // to disable
 
 //#define SOFT_BUTTON_0_PIN 8 // verificare. Attualmente già configurato come "#define KILL_PIN 8"

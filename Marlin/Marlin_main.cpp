@@ -407,6 +407,10 @@ void loop()
   manage_inactivity();
   checkHitEndstops();
   lcd_update();
+  // test di concetto per vedere se si accende SOLO durante la stampa da SD
+  if (MOTHERBOARD == 200)
+    if (card.sdprinting) digitalWrite(PRINTSTATUS, HIGH);
+    else digitalWrite(PRINTSTATUS, LOW);
 }
 
 void get_command() 
