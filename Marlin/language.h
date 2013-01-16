@@ -18,7 +18,7 @@
 // 9  Finnish
 
 #ifndef LANGUAGE_CHOICE
-#define LANGUAGE_CHOICE 1  // Pick your language from the list above
+#define LANGUAGE_CHOICE 7  // Pick your language from the list above
 #endif
 
 #define PROTOCOL_VERSION "1.0"
@@ -27,8 +27,8 @@
 	#define MACHINE_NAME "Ultimaker"
 	#define FIRMWARE_URL "http://firmware.ultimaker.com"
 #elseif MOTHERBOARD == 200
-	#define MACHINE_NAME "PowerWasp GM"
-	#define FIRMWARE_URL "http://waspproject.it"
+	#define MACHINE_NAME "PowerWasp "
+	#define FIRMWARE_URL "https://github.com/mgmatteo/Marlin"
 #else
 	#define MACHINE_NAME "Mendel"
 	#define FIRMWARE_URL "http://www.mendel-parts.com"
@@ -968,7 +968,7 @@
 #if LANGUAGE_CHOICE == 7
 
 	// LCD Menu Messages
-	#define WELCOME_MSG MACHINE_NAME " Pronto."
+	#define WELCOME_MSG MACHINE_NAME " Pronta"
 	#define MSG_SD_INSERTED          "SD Card inserita"
 	#define MSG_SD_REMOVED           "SD Card rimossa"
 	#define MSG_MAIN                 " Menu principale \003"

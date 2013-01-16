@@ -408,9 +408,10 @@ void loop()
   checkHitEndstops();
   lcd_update();
   // test di concetto per vedere se si accende SOLO durante la stampa da SD
-  if (MOTHERBOARD == 200)
-    if (card.sdprinting) digitalWrite(PRINTSTATUS, HIGH);
-    else digitalWrite(PRINTSTATUS, LOW);
+  #if MOTHERBOARD == 200
+    if (card.sdprinting) digitalWrite(SDPRINTSTATUS, HIGH);
+    else digitalWrite(SDPRINTSTATUS, LOW);
+  #ednif
 }
 
 void get_command() 

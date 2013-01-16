@@ -1381,56 +1381,56 @@
 #endif
 #endif
 
-#define X_STEP_PIN 25
-#define X_DIR_PIN 23
-#define X_MIN_PIN 22
-#define X_MAX_PIN 24
-#define X_ENABLE_PIN 27
+#define X_STEP_PIN         25
+#define X_DIR_PIN          23
+#define X_MIN_PIN          22
+#define X_MAX_PIN          24
+#define X_ENABLE_PIN       27
 
-#define Y_STEP_PIN 31
-#define Y_DIR_PIN 33
-#define Y_MIN_PIN 26
-#define Y_MAX_PIN 28
-#define Y_ENABLE_PIN 29
+#define Y_STEP_PIN         31
+#define Y_DIR_PIN          33
+#define Y_MIN_PIN          26
+#define Y_MAX_PIN          28
+#define Y_ENABLE_PIN       29
 
-#define Z_STEP_PIN 37
-#define Z_DIR_PIN 39
-#define Z_MIN_PIN 30
-#define Z_MAX_PIN 32
-#define Z_ENABLE_PIN 35
+#define Z_STEP_PIN         37
+#define Z_DIR_PIN          39
+#define Z_MIN_PIN          30
+#define Z_MAX_PIN          32
+#define Z_ENABLE_PIN       35
 
-#define HEATER_BED_PIN 4
-#define TEMP_BED_PIN 10
+#define HEATER_BED_PIN      4
+#define TEMP_BED_PIN       10
 
-#define HEATER_0_PIN  2
-#define TEMP_0_PIN 8
+#define HEATER_0_PIN        2
+#define TEMP_0_PIN          8
 
-#define HEATER_1_PIN 3
-#define TEMP_1_PIN 9
+#define HEATER_1_PIN        3
+#define TEMP_1_PIN          9
 
-#define HEATER_2_PIN -1
-#define TEMP_2_PIN -1
+#define HEATER_2_PIN       -1
+#define TEMP_2_PIN         -1
 
-#define E0_STEP_PIN         43
-#define E0_DIR_PIN          45
-#define E0_ENABLE_PIN       41
+#define E0_STEP_PIN        43
+#define E0_DIR_PIN         45
+#define E0_ENABLE_PIN      41
 
-#define E1_STEP_PIN         49
-#define E1_DIR_PIN          47
-#define E1_ENABLE_PIN       48
+#define E1_STEP_PIN        49
+#define E1_DIR_PIN         47
+#define E1_ENABLE_PIN      48
 
 #define SDPOWER            -1
-#define SDSS               53
-#define LED_PIN            13
-#define FAN_PIN            7
-#define PS_ON_PIN          12
-#define KILL_PIN           8
+#define SDSS               53  // EXP2
+#define LED_PIN            -1  // LED PIN is used for comand M42 (-Change pin status via gcode) // originally 13
+#define FAN_PIN             7  // require hw upgrade
+#define PS_ON_PIN          -1  // originally 12, but maybe unused?
+#define KILL_PIN           -1
 #define SUICIDE_PIN        54
 
-// new PowerWasp model with SD reader
+// new PowerWasp with SD reader
 #define SDSUPPORT
-#define SDCARDDETECT 38
-#define PRINTSTATUS 12
+#define SDCARDDETECT       38  // EXP2
+#define SDPRINTSTATUS      66  // EXP4 
 
 #endif // PowerWasp
 
@@ -1439,30 +1439,28 @@
  *
  ****************************************************************************************/
 
-
 #ifdef POWERPANEL
 
-#define BEEPER 18
+#define BEEPER             18  // EXP1
 
-#define SDCARDDETECT 38
+#define SDCARDDETECT       38  // EXP2
 
-#define LCD_PINS_RS 20
-#define LCD_PINS_ENABLE 17
-#define LCD_PINS_D4 16
-#define LCD_PINS_D5 21
-#define LCD_PINS_D6 5
-#define LCD_PINS_D7 6
+//lcd
+#define LCD_PINS_RS        20  // EXP1
+#define LCD_PINS_ENABLE    17  // EXP1
+#define LCD_PINS_D4        16  // EXP1
+#define LCD_PINS_D5        21  // EXP1
+#define LCD_PINS_D6         5  // EXP1
+#define LCD_PINS_D7         6  // EXP1
 
-//buttons are directly attached
-#define BTN_EN1 40
-#define BTN_EN2 42
-#define BTN_ENC 19  //the click
+//encoder
+#define BTN_EN1            40  // EXP2
+#define BTN_EN2            42  // EXP2
+#define BTN_ENC            19  // EXP1
 
 #define BLEN_C 2
 #define BLEN_B 1
 #define BLEN_A 0
-
-#define SDCARDDETECT 38
 
 //encoder rotation values
 #define encrot0 0
@@ -1470,19 +1468,18 @@
 #define encrot2 3
 #define encrot3 1
 
-#define POWERPANEL_IO_1_PIN 12 //
-#define POWERPANEL_IO_2_PIN 13 // used for kill
-//#define POWERPANEL_IO_2_PIN -1 // to disable
+//soft button
+#define KILL_PIN             8  // to use a harwired kill button. or uncomment the following row to use as a soft button
+//#define SOFT_BUTTON_0_PIN 8 //
+#define SOFT_BUTTON_1_PIN    9  // EXP3
+#define SOFT_BUTTON_2_PIN   10  // EXP3
+#define SOFT_BUTTON_3_PIN   11  // EXP3
 
-//#define SOFT_BUTTON_0_PIN 8 // verificare. Attualmente già configurato come "#define KILL_PIN 8"
-#define SOFT_BUTTON_1_PIN 9 // pin D10 su EXP3
-#define SOFT_BUTTON_2_PIN 10 // pin D11 su EXP3
-#define SOFT_BUTTON_3_PIN 11 // pin D12 su EXP3
+//expansion I/O port
+#define POWERPANEL_IO_1_PIN 12  // EXP3
+#define POWERPANEL_IO_2_PIN 13  // EXP3 // used for kill. -1 to disable
 
 #endif //POWERPANEL
-
-
-
 
 /****************************************************************************************
 * MegaTronics

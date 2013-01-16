@@ -281,9 +281,14 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 
 // default settings 
 
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {87.7817,87.7817,200*8/3,927.774}  // GMM measured eSteps
-#define DEFAULT_MAX_FEEDRATE          {500, 500, 5, 45}    // (mm/sec)    
-#define DEFAULT_MAX_ACCELERATION      {9000,9000,100,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
+//#define DEFAULT_AXIS_STEPS_PER_UNIT   {78.7402,78.7402,200*8/3,760*1.1}  // default steps per unit for ultimaker
+//#define DEFAULT_MAX_FEEDRATE          {500, 500, 5, 45}    // (mm/sec)
+//#define DEFAULT_MAX_ACCELERATION      {9000,9000,100,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
+
+// default wasp settings
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {87.7817,87.7817,200*8/3,927.774}  // GMM default steps per unit for wasp 
+#define DEFAULT_MAX_FEEDRATE          {30000, 30000, 10, 45}    // (mm/sec)
+#define DEFAULT_MAX_ACCELERATION      {9000,9000,50,10000}    // X, Y, Z, E maximum start speed for accelerated moves.
 
 #define DEFAULT_ACCELERATION          3000    // X, Y, Z and E max acceleration in mm/s^2 for printing moves 
 #define DEFAULT_RETRACT_ACCELERATION  3000   // X, Y, Z and E max acceleration in mm/s^2 for r retracts
@@ -314,7 +319,6 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 
 //#define ULTIMAKERCONTROLLER //as available from the ultimaker online store.
 //#define ULTIPANEL  //the ultipanel as on thingiverse
-#define POWERPANEL  // GMM powerpanel has the ultimaker functions plus I/O. 3 configurable buttons a kill button and an expansion port for IO
 
 // The RepRapDiscount Smart Controller (white PCB)
 // http://reprap.org/wiki/RepRapDiscount_Smart_Controller
@@ -323,6 +327,10 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 // The GADGETS3D G3D LCD/SD Controller (blue PCB)
 // http://reprap.org/wiki/RAMPS_1.3/1.4_GADGETS3D_Shield_with_Panel
 //#define G3D_PANEL
+
+// The POWERPANEL Controller
+// http://mcmos.wordpress.com/tag/powerpanel/
+#define POWERPANEL  // POWERPANEL has the ULTIMAKERCONTROLLER functions plus 3 configurable buttons a kill button and an expansion port for I/O
 
 //automatic expansion
 #if defined(ULTIMAKERCONTROLLER) || defined(REPRAP_DISCOUNT_SMART_CONTROLLER) || defined(G3D_PANEL) || defined(POWERPANEL)

@@ -249,7 +249,7 @@ const unsigned int dropsegments=5; //everything with less than this number of st
  #undef SDCARDDETECTINVERTED
 #endif
 
-// GMM: il lettore sd adafruit funziona al contrario di quello utilpanel: c'è segnale quando è inserita una sd
+// GMM: adafruit SD Cardreader works high whed a card is detected
 #ifdef POWERPANEL
  #define SDCARDDETECTINVERTED
 #endif
