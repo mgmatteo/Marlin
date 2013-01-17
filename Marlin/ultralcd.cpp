@@ -180,6 +180,10 @@ static void lcd_sdcard_stop()
         enquecommand_P(PSTR(SD_FINISHED_RELEASECOMMAND));
     }
     autotempShutdown();
+    if(SD_FINISHED_DISABLEHEATERS)
+    {
+        disable_heater();
+    }
 }
 
 /* Menu implementation */
