@@ -387,13 +387,15 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 // 1 expansion port
 // if used in conjunction with on Ultimaker board these are connected on "Expansion 3" but can be reconfigured to be used with any other digital input pin for any board use
 // The following pin configuration assumes it has been connected to expansion 3 of an ultimaker board (1.5.4 and newer)
-// pin 8,9,10,11 are used as inputs for the buttons on the panel and pins 12,13 as generic outputAll pins are pwm. All pins are replicated on the expansion port of the POWERPANEL for convenience (no need to reopen the printer, more cleaner installation)
-// pin 8 is normally used to kill the printer in case of emergency. It's configured in pins.h
+// pin 8,9,10,11 are used as inputs for the buttons on the panel and pins 12,13 as generic output, all pins are pwm. All pins are replicated on the expansion port of the POWERPANEL for convenience (no need to reopen the printer, more cleaner installation)
+// pin 8 (soft button 0) is normally used to kill the printer in case of emergency. It's configured in pins.h
 
 // actions to be performed are expressed as gcodes
-#define SOFT_BUTTON_ACTION_1 "M42 S50 P13" // Fan on
-#define SOFT_BUTTON_ACTION_2 "M42 S0 P13" // Fan off
-#define SOFT_BUTTON_ACTION_3 "G28" // HOME all axis
+#define SOFT_BTN_ACTION_0 "M25" // pause sd print // can be overvritten by a hardwired button
+//#define SOFT_BTN_ACTION_1 "M42 S250 P7" // Fan on
+#define SOFT_BTN_ACTION_1 "G28" // Fan on
+#define SOFT_BTN_ACTION_2 "M24" // Resume print
+#define SOFT_BTN_ACTION_3 "G28" // HOME all axis
 // other usage examples:
 // "M240" to use a button on the panel to riggers a camera by emulating a Canon RC-1 Remote using pin 12 that's also present on the expansion port of POWERPANEL
 // "M42 S255 P13" // turn on pin 13 (pwm) using Marlin command M42

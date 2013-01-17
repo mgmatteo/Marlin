@@ -17,13 +17,13 @@ int absPreheatHPBTemp;
 int absPreheatFanSpeed;
 /* !Configuration settings */
 
-// GMM Detecting if a button is pressed or not (debounce purposes)
+// Powerpanel button status
 #ifdef POWERPANEL
-boolean powerpanel_button_1_pressed = false; 
-boolean powerpanel_button_2_pressed = false; 
-boolean powerpanel_button_3_pressed = false;
-#endif  
-// END GMM
+boolean powerpanel_btn_0_pressed = false;
+boolean powerpanel_btn_1_pressed = false;
+boolean powerpanel_btn_2_pressed = false; 
+boolean powerpanel_btn_3_pressed = false;
+#endif
 
 //Function pointer to menu functions.
 typedef void (*menuFunc_t)();
@@ -225,6 +225,9 @@ static void lcd_autostart_sd()
 
 void lcd_preheat_pla()
 {
+    enquecommand_P(PSTR("G91"));  // GMM temprary added
+    enquecommand_P(PSTR("G1 Z20"));  // GMM temprary added
+    enquecommand_P(PSTR("G90"));  // GMM temprary added    
     setTargetHotend0(plaPreheatHotendTemp);
     setTargetHotend1(plaPreheatHotendTemp);
     setTargetHotend2(plaPreheatHotendTemp);
@@ -235,6 +238,9 @@ void lcd_preheat_pla()
 
 void lcd_preheat_abs()
 {
+    enquecommand_P(PSTR("G91"));  // GMM temprary added
+    enquecommand_P(PSTR("G1 Z20"));  // GMM temprary added
+    enquecommand_P(PSTR("G90"));  // GMM temprary added
     setTargetHotend0(absPreheatHotendTemp);
     setTargetHotend1(absPreheatHotendTemp);
     setTargetHotend2(absPreheatHotendTemp);
@@ -268,11 +274,11 @@ static void lcd_prepare_menu()
     START_MENU();
     MENU_ITEM(back, MSG_MAIN, lcd_main_menu);
 #ifdef SDSUPPORT
-    //MENU_ITEM(function, MSG_AUTOSTART, lcd_autostart_sd);
+    MENU_ITEM(function, MSG_AUTOSTART, lcd_autostart_sd); // GMM temprary added
 #endif
     MENU_ITEM(gcode, MSG_DISABLE_STEPPERS, PSTR("M84"));
     MENU_ITEM(gcode, MSG_AUTO_HOME, PSTR("G28"));
-    //MENU_ITEM(gcode, MSG_SET_ORIGIN, PSTR("G92 X0 Y0 Z0"));
+    MENU_ITEM(gcode, MSG_SET_ORIGIN2, PSTR("G1 X0 Y0 Z30"));  // GMM temprary added
     MENU_ITEM(function, MSG_PREHEAT_PLA, lcd_preheat_pla);
     MENU_ITEM(function, MSG_PREHEAT_ABS, lcd_preheat_abs);
     MENU_ITEM(gcode, MSG_COOLDOWN, PSTR("M104 S0\nM140 S0"));
@@ -689,14 +695,16 @@ void lcd_init()
     WRITE(BTN_EN1,HIGH);
     WRITE(BTN_EN2,HIGH);
     WRITE(BTN_ENC,HIGH);
-    // GMM powerpanel I/O
+    // Powerpanel I/O
     #ifdef POWERPANEL    
-      pinMode(SOFT_BUTTON_1_PIN,INPUT);
-      pinMode(SOFT_BUTTON_2_PIN,INPUT);
-      pinMode(SOFT_BUTTON_3_PIN,INPUT);
-      WRITE(SOFT_BUTTON_1_PIN,HIGH);
-      WRITE(SOFT_BUTTON_2_PIN,HIGH);
-      WRITE(SOFT_BUTTON_3_PIN,HIGH);
+      pinMode(SOFT_BTN_0_PIN,INPUT);
+      pinMode(SOFT_BTN_1_PIN,INPUT);
+      pinMode(SOFT_BTN_2_PIN,INPUT);
+      pinMode(SOFT_BTN_3_PIN,INPUT);
+      WRITE(SOFT_BTN_0_PIN,HIGH);
+      WRITE(SOFT_BTN_1_PIN,HIGH);
+      WRITE(SOFT_BTN_2_PIN,HIGH);
+      WRITE(SOFT_BTN_3_PIN,HIGH);
       #ifdef POWERPANEL_IO_1_PIN
         #if (POWERPANEL_IO_1_PIN > -1)
          SET_OUTPUT(POWERPANEL_IO_1_PIN);
@@ -709,8 +717,7 @@ void lcd_init()
         WRITE(POWERPANEL_IO_2_PIN, LOW);
        #endif
       #endif   
-      #endif 
-     // GMM end    
+      #endif  
 #else
     pinMode(SHIFT_CLK,OUTPUT);
     pinMode(SHIFT_LD,OUTPUT);
@@ -782,6 +789,12 @@ void lcd_update()
             lcdDrawUpdate--;
         lcd_next_update_millis = millis() + 100;
     }
+// test di concetto per vedere se si accende SOLO durante la stampa da SD
+#if MOTHERBOARD == 200
+    //if (card.sdprinting) digitalWrite(SDPRINTLED, HIGH);
+    if (IS_SD_PRINTING) digitalWrite(SDPRINTLED, HIGH);
+    else digitalWrite(SDPRINTLED, LOW);
+#endif
 }
 
 void lcd_setstatus(const char* message)
@@ -823,28 +836,35 @@ void lcd_buttons_update()
         newbutton |= EN_C;
     buttons = newbutton;
   // GMM handling the hard buttons actions with debounce.
-  #ifdef POWERPANEL  
-     if( 0 == READ(SOFT_BUTTON_1_PIN) ){
-       if (powerpanel_button_1_pressed == false){
-         powerpanel_button_1_pressed = true; 
-         enquecommand(SOFT_BUTTON_ACTION_1);
+  #ifdef POWERPANEL
+    if( 0 == READ(SOFT_BTN_0_PIN) ){
+      if (powerpanel_btn_0_pressed == false){
+        powerpanel_btn_0_pressed = true;
+        enquecommand_P(PSTR(SOFT_BTN_ACTION_0));
+        }
+    }
+    else (powerpanel_btn_0_pressed = false);
+     if( 0 == READ(SOFT_BTN_1_PIN) ){
+       if (powerpanel_btn_1_pressed == false){
+         powerpanel_btn_1_pressed = true; 
+         enquecommand_P(PSTR(SOFT_BTN_ACTION_1));
        }
      }
-     else (powerpanel_button_1_pressed = false);
-     if( 0 == READ(SOFT_BUTTON_2_PIN) ){
-       if (powerpanel_button_2_pressed == false){
-         powerpanel_button_2_pressed = true; 
-         enquecommand(SOFT_BUTTON_ACTION_2);
+     else (powerpanel_btn_1_pressed = false);
+     if( 0 == READ(SOFT_BTN_2_PIN) ){
+       if (powerpanel_btn_2_pressed == false){
+         powerpanel_btn_2_pressed = true; 
+         enquecommand(SOFT_BTN_ACTION_2);
        }
      }
-     else (powerpanel_button_2_pressed = false);  
-     if( 0 == READ(SOFT_BUTTON_3_PIN) ){
-       if (powerpanel_button_3_pressed == false){
-         powerpanel_button_3_pressed = true; 
-         enquecommand(SOFT_BUTTON_ACTION_3);
+     else (powerpanel_btn_2_pressed = false);  
+     if( 0 == READ(SOFT_BTN_3_PIN) ){
+       if (powerpanel_btn_3_pressed == false){
+         powerpanel_btn_3_pressed = true; 
+         enquecommand(SOFT_BTN_ACTION_3);
        }
      }
-     else (powerpanel_button_3_pressed = false);
+     else (powerpanel_btn_3_pressed = false);
   #endif
   // end GMM        
 #else   //read it from the shift register

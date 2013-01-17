@@ -1430,7 +1430,7 @@
 // new PowerWasp with SD reader
 #define SDSUPPORT
 #define SDCARDDETECT       38  // EXP2
-#define SDPRINTSTATUS      66  // EXP4 
+#define SDPRINTLED         66  // EXP4 
 
 #endif // PowerWasp
 
@@ -1469,15 +1469,14 @@
 #define encrot3 1
 
 //soft button
-#define KILL_PIN             8  // to use a harwired kill button. or uncomment the following row to use as a soft button
-//#define SOFT_BUTTON_0_PIN 8 //
-#define SOFT_BUTTON_1_PIN    9  // EXP3
-#define SOFT_BUTTON_2_PIN   10  // EXP3
-#define SOFT_BUTTON_3_PIN   11  // EXP3
+#define SOFT_BTN_0_PIN       8  // EXP3 //#define KILL_PIN 8  // to use a harwired kill button
+#define SOFT_BTN_1_PIN       9  // EXP3
+#define SOFT_BTN_2_PIN      10  // EXP3
+#define SOFT_BTN_3_PIN      11  // EXP3
 
 //expansion I/O port
 #define POWERPANEL_IO_1_PIN 12  // EXP3
-#define POWERPANEL_IO_2_PIN 13  // EXP3 // used for kill. -1 to disable
+#define POWERPANEL_IO_2_PIN 13  // EXP3 // used for LED on ultimaker
 
 #endif //POWERPANEL
 

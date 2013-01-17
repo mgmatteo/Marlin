@@ -27,8 +27,12 @@
 	#define MACHINE_NAME "Ultimaker"
 	#define FIRMWARE_URL "http://firmware.ultimaker.com"
 #elif MOTHERBOARD == 200
-	#define MACHINE_NAME "PowerWasp "
-	#define FIRMWARE_URL "https://github.com/mgmatteo/Marlin"
+    #ifdef POWERPANEL
+       #define MACHINE_NAME "PowerWasp+ "
+    #else
+       #define MACHINE_NAME "PowerWasp "
+    #endif
+    #define FIRMWARE_URL "https://github.com/mgmatteo/Marlin"
 #else
 	#define MACHINE_NAME "Mendel"
 	#define FIRMWARE_URL "http://www.mendel-parts.com"
@@ -976,6 +980,7 @@
 	#define MSG_DISABLE_STEPPERS     "Disabilita motori"
 	#define MSG_AUTO_HOME            "Ritorna alla base"
 	#define MSG_SET_ORIGIN           "Imp. origine assi"
+	#define MSG_SET_ORIGIN2          "GM test axis"
 	#define MSG_PREHEAT_PLA          "Preriscalda PLA"
 	#define MSG_PREHEAT_PLA_SETTINGS "Impostazioni PLA"
 	#define MSG_PREHEAT_ABS          "Preriscalda ABS"
