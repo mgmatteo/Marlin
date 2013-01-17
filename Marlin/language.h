@@ -23,10 +23,10 @@
 
 #define PROTOCOL_VERSION "1.0"
 
-//#if MOTHERBOARD == 7 || MOTHERBOARD == 71
-//	#define MACHINE_NAME "Ultimaker"
-//	#define FIRMWARE_URL "http://firmware.ultimaker.com"
-#if MOTHERBOARD == 200
+#if MOTHERBOARD == 7 || MOTHERBOARD == 71
+	#define MACHINE_NAME "Ultimaker"
+	#define FIRMWARE_URL "http://firmware.ultimaker.com"
+#elif MOTHERBOARD == 200
 	#define MACHINE_NAME "PowerWasp "
 	#define FIRMWARE_URL "https://github.com/mgmatteo/Marlin"
 #else
@@ -984,10 +984,10 @@
 	#define MSG_EXTRUDE              "Estrudi"
 	#define MSG_RETRACT              "Ritrai"
 	#define MSG_MOVE_AXIS            "Muovi assi"
-	#define MSG_SPEED                "Velcita'"
+	#define MSG_SPEED                "Velocita'"
 	#define MSG_NOZZLE               "\002 Ugello"
-	#define MSG_NOZZLE1              "\002 Ugello2"
-	#define MSG_NOZZLE2              "\002 Ugello3"
+	#define MSG_NOZZLE1              "\002 Ugello 2"
+	#define MSG_NOZZLE2              "\002 Ugello 3"
 	#define MSG_BED                  "\002 Piatto"
 	#define MSG_FAN_SPEED            "\006 Ventola"
 	#define MSG_FLOW                 "Flusso"
@@ -1034,16 +1034,16 @@
 	#define MSG_DWELL                "Sospensione..."
 	#define MSG_USERWAIT             "Attendo utente..."
 	#define MSG_RESUMING             "Riprendo stampa"
-	#define MSG_NO_MOVE              "Nessun movimento."
+	#define MSG_NO_MOVE              "Nessun movimento"
 	#define MSG_PART_RELEASE         "Rilascio parziale"
-	#define MSG_KILLED               "UCCISO."
-	#define MSG_STOPPED              "ARRESTATO."
+	#define MSG_KILLED               "UCCISO!"
+	#define MSG_STOPPED              "ARRESTATO"
 	#define MSG_CONTROL_RETRACT      "Ritrai mm"
 	#define MSG_CONTROL_RETRACTF     "Ritrai  F"
 	#define MSG_CONTROL_RETRACT_ZLIFT "Salta mm"
 	#define MSG_CONTROL_RETRACT_RECOVER "UnRet +mm"
 	#define MSG_CONTROL_RETRACT_RECOVERF "UnRet  F"
-	#define MSG_AUTORETRACT          "Auto rilascio."
+	#define MSG_AUTORETRACT          "Auto ritrazione"
 
 	// Serial Console Messages
 
