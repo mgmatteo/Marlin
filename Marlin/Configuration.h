@@ -395,8 +395,7 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 
 // actions to be performed are expressed as gcodes
 #define SOFT_BTN_ACTION_0 "M25" // pause sd print // can be overvritten by a hardwired button
-//#define SOFT_BTN_ACTION_1 "M42 S250 P7" // Fan on
-#define SOFT_BTN_ACTION_1 "G28" // Fan on
+#define SOFT_BTN_ACTION_1 "M106" // Fan on
 #define SOFT_BTN_ACTION_2 "M24" // Resume print
 #define SOFT_BTN_ACTION_3 "G28" // HOME all axis
 // other usage examples:

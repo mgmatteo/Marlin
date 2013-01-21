@@ -17,12 +17,12 @@ int absPreheatHPBTemp;
 int absPreheatFanSpeed;
 /* !Configuration settings */
 
-// Powerpanel button status
+// Powerpanel button status (if initialate sa "false" would execute at startup.. Try with false)
 #ifdef POWERPANEL
-boolean powerpanel_btn_0_pressed = false;
-boolean powerpanel_btn_1_pressed = false;
-boolean powerpanel_btn_2_pressed = false; 
-boolean powerpanel_btn_3_pressed = false;
+boolean powerpanel_btn_0_pressed = true;
+boolean powerpanel_btn_1_pressed = true;
+boolean powerpanel_btn_2_pressed = true; 
+boolean powerpanel_btn_3_pressed = true;
 #endif
 
 //Function pointer to menu functions.
@@ -872,6 +872,7 @@ void lcd_buttons_update()
        if (powerpanel_btn_3_pressed == false){
          powerpanel_btn_3_pressed = true; 
          enquecommand(SOFT_BTN_ACTION_3);
+         //lcd_preheat_pla();
        }
      }
      else (powerpanel_btn_3_pressed = false);
