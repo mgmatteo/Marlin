@@ -420,7 +420,7 @@ void CardReader::checkautostart(bool force)
   {
     if(!autostart_stilltocheck)
       return;
-    if(autostart_atmillis<millis())
+    if(autostart_atmillis>millis())
       return;
   }
   autostart_stilltocheck=false;

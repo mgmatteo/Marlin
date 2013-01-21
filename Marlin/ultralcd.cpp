@@ -756,9 +756,13 @@ void lcd_update()
         {
             card.initsd();
             LCD_MESSAGEPGM(MSG_SD_INSERTED);
+            delay(100);
+            card.checkautostart(true);
         }
         else
         {
+            if (IS_SD_PRINTING)
+                lcd_sdcard_stop();
             card.release();
             LCD_MESSAGEPGM(MSG_SD_REMOVED);
         }
