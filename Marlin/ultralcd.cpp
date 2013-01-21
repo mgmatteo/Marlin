@@ -164,6 +164,7 @@ static void lcd_return_to_status()
 static void lcd_sdcard_pause()
 {
     card.pauseSDPrint();
+    LCD_MESSAGEPGM(MSG_SD_PAUSED);
 }
 static void lcd_sdcard_resume()
 {
@@ -184,6 +185,7 @@ static void lcd_sdcard_stop()
     {
         disable_heater();
     }
+    LCD_MESSAGEPGM(MSG_SD_STOPPED);
 }
 
 /* Menu implementation */
@@ -229,9 +231,10 @@ static void lcd_autostart_sd()
 
 void lcd_preheat_pla()
 {
-    enquecommand_P(PSTR("G91"));  // GMM temprary added
+    //enquecommand_P(PSTR("G91\nG1 Z20\nG90"));  // GMM temprary added
+    enquecommand_P(PSTR("G91"));  // GMM temprary added   
     enquecommand_P(PSTR("G1 Z20"));  // GMM temprary added
-    enquecommand_P(PSTR("G90"));  // GMM temprary added    
+    enquecommand_P(PSTR("G90"));  // GMM temprary added
     setTargetHotend0(plaPreheatHotendTemp);
     setTargetHotend1(plaPreheatHotendTemp);
     setTargetHotend2(plaPreheatHotendTemp);
@@ -242,6 +245,7 @@ void lcd_preheat_pla()
 
 void lcd_preheat_abs()
 {
+    //enquecommand_P(PSTR("G91\nG1 Z20\nG90"));  // GMM temprary added
     enquecommand_P(PSTR("G91"));  // GMM temprary added
     enquecommand_P(PSTR("G1 Z20"));  // GMM temprary added
     enquecommand_P(PSTR("G90"));  // GMM temprary added
@@ -287,7 +291,8 @@ static void lcd_prepare_menu()
 #endif
     MENU_ITEM(function, MSG_PREHEAT_PLA, lcd_preheat_pla);
     MENU_ITEM(function, MSG_PREHEAT_ABS, lcd_preheat_abs);
-    MENU_ITEM(gcode, MSG_COOLDOWN, PSTR("M104 S0\nM140 S0"));
+    //MENU_ITEM(gcode, MSG_COOLDOWN, PSTR("M104 S0\nM140 S0"));
+    MENU_ITEM(function, MSG_COOLDOWN, disable_heater);
     MENU_ITEM(submenu, MSG_MOVE_AXIS, lcd_move_menu);
     END_MENU();
 }
