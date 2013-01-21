@@ -25,6 +25,8 @@
 #define LCD_STR_CLOCK       "\x07"
 #define LCD_STR_ARROW_RIGHT "\x7E"  /* from the default character set */
 
+bool extblink = true;
+
 LCD_CLASS lcd(LCD_PINS_RS, LCD_PINS_ENABLE, LCD_PINS_D4, LCD_PINS_D5,LCD_PINS_D6,LCD_PINS_D7);  //RS,Enable,D4,D5,D6,D7
 static void lcd_implementation_init()
 {
@@ -193,7 +195,10 @@ static void lcd_implementation_status_screen()
 
 #else//LCD_WIDTH > 19
     lcd.setCursor(0, 0);
-    lcd.print(LCD_STR_THERMOMETER[0]);
+    if (digitalRead(HEATER_0_PIN) & extblink == true)
+        lcd.print("^");
+    else
+        lcd.print(LCD_STR_THERMOMETER[0]);
     lcd.print(itostr3(tHotend));
     lcd.print('/');
     lcd.print(itostr3left(tTarget));
@@ -293,6 +298,12 @@ static void lcd_implementation_status_screen()
     //Status message line on the last line
     lcd.setCursor(0, LCD_HEIGHT - 1);
     lcd.print(lcd_status_message);
+        
+    //Blink logic
+    if (extblink == true)
+        extblink = false;
+    else
+        extblink = true;
 }
 static void lcd_implementation_drawmenu_generic(uint8_t row, const char* pstr, char pre_char, char post_char)
 {
