@@ -5,6 +5,7 @@
 #include "language.h"
 #include "cardreader.h"
 #include "temperature.h"
+#include "stepper.h"
 #include "ConfigurationStore.h"
 
 /* Configuration settings */
@@ -274,6 +275,9 @@ static void lcd_tune_menu()
 #endif
     MENU_ITEM_EDIT(int3, MSG_FAN_SPEED, &fanSpeed, 0, 255);
     MENU_ITEM_EDIT(int3, MSG_FLOW, &extrudemultiply, 10, 999);
+#ifdef FILAMENTCHANGEENABLE
+     MENU_ITEM(gcode, MSG_FILAMENTCHANGE, PSTR("M600"));
+#endif
     END_MENU();
 }
 
