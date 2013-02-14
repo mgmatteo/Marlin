@@ -333,7 +333,11 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 
 // The POWERPANEL Controller
 // http://mcmos.wordpress.com/tag/powerpanel/
-#define POWERPANEL  // POWERPANEL has the ULTIMAKERCONTROLLER functions plus 3 configurable buttons a kill button and an expansion port for I/O
+//#define POWERPANEL  // POWERPANEL has the ULTIMAKERCONTROLLER functions plus 3 configurable buttons a kill button and an expansion port for I/O
+
+// The SIMPLE Controller
+// http://mcmos.wordpress.com/tag/powerpanel/
+#define SIMPLEREADER  // SIMPLEREADER
 
 //automatic expansion
 #if defined(ULTIMAKERCONTROLLER) || defined(REPRAP_DISCOUNT_SMART_CONTROLLER) || defined(G3D_PANEL) || defined(POWERPANEL)

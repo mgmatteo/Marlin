@@ -452,8 +452,9 @@ void CardReader::checkautostart(bool force)
     if(p.name[9]!='~') //skip safety copies
     if(strncmp((char*)p.name,autoname,5)==0)
     {
+      enquecommand("G28");     // GMM temprary added
+      enquecommand("G1 Z20");  // GMM temprary added
       char cmd[30];
-
       sprintf_P(cmd, PSTR("M23 %s"), autoname);
       enquecommand(cmd);
       enquecommand_P(PSTR("M24"));

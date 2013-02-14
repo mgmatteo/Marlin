@@ -250,9 +250,10 @@ const unsigned int dropsegments=5; //everything with less than this number of st
  #undef SDCARDDETECTINVERTED
 #endif
 
-// GMM: adafruit SD Cardreader works high whed a card is detected
-#ifdef POWERPANEL
- #define SDCARDDETECTINVERTED
+// GMM
+#ifdef POWERPANEL || SIMPLEREADER
+ #undef SDCARDDETECTINVERTED // DF Robot module
+// #define SDCARDDETECTINVERTED // Adafruit
 #endif
 
 // Power Signal Control Definitions
